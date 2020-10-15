@@ -10,8 +10,12 @@ loci_file_mantis = "$projectDir/$params.loci_file_mantis"
 normal_bam = "$projectDir/$params.normal_bam"
 normal_bai = "$projectDir/$params.normal_bai"
 
-genome_fa = Channel.fromPath(params.genome_fa)
-genome_fa_fai = Channel.fromPath(params.genome_fa_fai)
+genome_fa = file(params.genome_fa)
+genome_fa_fai = file(params.genome_fa_fai)
+
+//genome_fa = "/home/dperera/hg19.fa"
+//genome_fa_fai = "/home/dperera/hg19.fa.fai"
+
 
 // Read in bam files
 bam_paths = Paths.get(bam_folder,"/DNA*/DNA*[0-9].hardclipped.bam")
@@ -21,7 +25,9 @@ bam_files = Channel.fromPath(bam_paths)
 bai_paths = Paths.get(bam_folder,"/DNA*/DNA*[0-9].hardclipped.bam.bai")
 bai_files = Channel.fromPath(bai_paths)
 
-
+// The bam and bai files are used by both callers, so we split the channel into two:
+bam_files.into {bam_files_msisensor; bam_files_mantis}
+bai_files.into {bai_files_msisensor; bai_files_mantis}
 
 /**************
 ** MANTIS **
@@ -31,8 +37,8 @@ process run_mantis{
     publishDir params.output_folder
 
     input:
-        file tumour_bam from bam_files
-	file tumour_bai from bai_files
+        file tumour_bam from bam_files_mantis
+	file tumour_bai from bai_files_mantis
         path normal_bam
         path normal_bai
         file genome_fa
