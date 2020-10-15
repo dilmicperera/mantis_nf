@@ -22,10 +22,6 @@ bai_paths = Paths.get(bam_folder,"/DNA*/DNA*[0-9].hardclipped.bam.bai")
 bai_files = Channel.fromPath(bai_paths)
 
 
-// The bam and bai files are used by both callers, so we split the channel into two:
-bam_files.into {bam_files_msisensor; bam_files_mantis}
-bai_files.into {bai_files_msisensor; bai_files_mantis}
-
 
 /**************
 ** MANTIS **
@@ -35,8 +31,8 @@ process run_mantis{
     publishDir params.output_folder
 
     input:
-        file tumour_bam from bam_files_mantis
-	file tumour_bai from bai_files_mantis
+        file tumour_bam from bam_files
+	file tumour_bai from bai_files
         path normal_bam
         path normal_bai
         path genome_fa
