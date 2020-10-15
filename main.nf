@@ -10,8 +10,8 @@ loci_file_mantis = "$projectDir/$params.loci_file_mantis"
 normal_bam = "$projectDir/$params.normal_bam"
 normal_bai = "$projectDir/$params.normal_bai"
 
-genome_fa = "$params.genome_fa"
-genome_fa_fai = "$params.genome_fa_fai"
+genome_fa = Channel.fromPath($params.genome_fa)
+genome_fa_fai = Channel.fromPath($params.genome_fa.fai)
 
 // Read in bam files
 bam_paths = Paths.get(bam_folder,"/DNA*/DNA*[0-9].hardclipped.bam")
@@ -35,8 +35,8 @@ process run_mantis{
 	file tumour_bai from bai_files
         path normal_bam
         path normal_bai
-        path genome_fa
-        path genome_fa_fai
+        file genome_fa
+        file genome_fa_fai
         path loci_file_mantis
     output:
         file "${tumour_bam.baseName}.mantis.status" into mantis_outputs
