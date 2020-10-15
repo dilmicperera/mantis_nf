@@ -32,7 +32,7 @@ bai_files.into {bai_files_msisensor; bai_files_mantis}
 ***************/
 
 process run_mantis{
-
+    cpus 8
     publishDir params.output_folder
 
     input:
