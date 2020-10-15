@@ -10,8 +10,8 @@ loci_file_mantis = "$projectDir/$params.loci_file_mantis"
 normal_bam = "$projectDir/$params.normal_bam"
 normal_bai = "$projectDir/$params.normal_bai"
 
-genome_fa = Channel.fromPath($params.genome_fa)
-genome_fa_fai = Channel.fromPath($params.genome_fa.fai)
+genome_fa = Channel.fromPath(params.genome_fa)
+genome_fa_fai = Channel.fromPath(params.genome_fa.fai)
 
 // Read in bam files
 bam_paths = Paths.get(bam_folder,"/DNA*/DNA*[0-9].hardclipped.bam")
