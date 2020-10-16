@@ -10,8 +10,8 @@ loci_file_mantis = "$projectDir/$params.loci_file_mantis"
 normal_bam = "$projectDir/$params.normal_bam"
 normal_bai = "$projectDir/$params.normal_bai"
 
-genome_fa = file(params.genome_fa)
-genome_fa_fai = file(params.genome_fa_fai)
+//genome_fa = file(params.genome_fa)
+//genome_fa_fai = file(params.genome_fa_fai)
 
 //genome_fa = "/home/dperera/hg19.fa"
 //genome_fa_fai = "/home/dperera/hg19.fa.fai"
@@ -39,14 +39,12 @@ process run_mantis{
 	file tumour_bai from bai_files
         path normal_bam
         path normal_bai
-        file genome_fa
-        file genome_fa_fai
         path loci_file_mantis
     output:
         file "${tumour_bam.baseName}.mantis.status" into mantis_outputs
 
     """
-    python3 /opt/mantis/mantis.py --bedfile $loci_file_mantis --genome $genome_fa -n $normal_bam -t ${tumour_bam} -o ${tumour_bam.baseName}.mantis
+    python3 /opt/mantis/mantis.py --bedfile $loci_file_mantis -n $normal_bam -t ${tumour_bam} -o ${tumour_bam.baseName}.mantis
     """
 }
 
